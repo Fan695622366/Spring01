@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.3.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+		http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang-4.3.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+
+	<!--
+		id表示对象的id值,在所有bean标签中唯一
+		class表示创建对象的类
+		name表示bean的名称,bean标签中的name可以重名,编译时不会报错,但是在运行时会报错
+		abstract 表示是否为抽象类,[抽象类不能创建对象]
+		
+		scope表示域[这里理解为是创建什么类型的对象]
+			其值有:singleton(默认值)[重点],prototype[重点],request,session
+				singleton 表示的是创建单例对象
+				prototype 表示的是创建多例对象
+				
+		lazy-init 该属性只有在scope属性为singleton的时候,才起到作用
+			也就是说,当对象为单例模式的时候,可以通过该属性来设置是懒汉式,还是是恶汉式
+			值也有三种形式 true[懒加载][延迟加载][懒汉式], false[非懒加载][非延迟加载][恶汉式], defalut
+			
+		init-method 表示创建对象的初始化方法
+			在单例模式的对象中只执行一次
+			在多例模式的对象中,每创建一次对象,就执行一次
+		
+		destroy-method 表示在IoC容器被销毁的时候调用的此方法
+			这里的方法只针对于singleton有效,对prototype无效
+		
+		
+		
+				
+	  -->
+	
+	
+	
+	<!--
+		空参构造方法创建对象
+	 -->
+	<bean id="user" name="user" class="a_createObject.User" scope="singleton" lazy-init="false" init-method="init_" destroy-method="destroy_" ></bean>
+	
+	<bean id="str" class="java.lang.String">
+		<constructor-arg index="0" value="siri"></constructor-arg>
+	</bean>
+	
+	<!--
+		有参构造创建对象
+	  -->
+	 <bean id="user2" class="a_createObject.User">
+	 	<constructor-arg index="0" type="int" value="111"></constructor-arg>
+	 	<constructor-arg index="1" type="String" value="str"></constructor-arg>
+	 	<constructor-arg index="2" type="int" value="23"></constructor-arg>
+	 </bean>
+	
+	<!--
+		通过静态工厂获取到对象 
+	-->
+	<bean id="user3" class="a_createObject.UserFactory" factory-method="getUser"></bean>
+	
+	<!--
+		通过非静态工厂获取到对象
+			首先要获取到工厂对象
+	  -->
+	 <bean id="factory" class="a_createObject.UserFactory"></bean>
+	 <bean id="user4" factory-bean="factory" factory-method="getUser2"></bean>
+	
+</beans>
